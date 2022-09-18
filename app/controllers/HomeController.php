@@ -11,4 +11,9 @@ class Home extends Controller
   {
     $this->view->render("home/index");
   }
+
+  public function show()
+  {
+    echo "Mostrando todo";
+  }
 }
