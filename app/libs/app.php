@@ -35,7 +35,18 @@ class App
 
   public function run()
   {
-    echo $this->getController();
-    echo $this->getMethod();
+    $controller = ucfirst($this->getController());
+    $method = $this->getMethod();
+    $fileController = "app/controllers/{$controller}Controller.php";
+
+    if (file_exists($fileController)) {
+      require_once $fileController;
+      $controller = new $controller();
+      $controller->$method();
+    } else {
+      require_once "app/controllers/ErrorsController.php";
+      $notFound = new Errors();
+      $notFound->index();
+    }
   }
 }
