@@ -9,11 +9,7 @@ class Home extends Controller
 
   public function index()
   {
+    require_once "app/models/HomeModel.php";
     $this->view->render("home/index");
-  }
-
-  public function show()
-  {
-    echo "Mostrando todo";
   }
 }
