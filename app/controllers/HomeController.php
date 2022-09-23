@@ -1,5 +1,7 @@
 <?php
 
+require_once "app/models/HomeModel.php";
+
 class Home extends Controller
 {
   public function __construct()
@@ -9,7 +11,6 @@ class Home extends Controller
 
   public function index()
   {
-    require_once "app/models/HomeModel.php";
     $data = $this->getAll();
     $this->view->render("home/index", $data);
   }
@@ -18,5 +19,14 @@ class Home extends Controller
   {
     $model = new HomeModel();
     return $model->getAll();
+  }
+
+  public function create()
+  {
+    $tarea =  $this->post("nombreTarea");
+    $model = new HomeModel();
+    $model->save($tarea);
+
+    header('Location: /');
   }
 }

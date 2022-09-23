@@ -22,9 +22,9 @@ class HomeModel extends Model
     }
   }
 
-  public function save()
+  public function save($tarea)
   {
-    # code...
+    $this->query("INSERT INTO tareas (nombre_tarea) VALUES ('{$tarea}')");
   }
 
   public function get($id)
