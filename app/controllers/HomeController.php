@@ -24,9 +24,27 @@ class Home extends Controller
   public function create()
   {
     $tarea =  $this->post("nombreTarea");
-    $model = new HomeModel();
-    $model->save($tarea);
+    if (!empty($tarea)) {
+      $model = new HomeModel();
+      $model->save($tarea);
 
+      header('Location: /');
+    }
+
+    header('Location: /');
+  }
+
+  public function update($params = null)
+  {
+    $model = new HomeModel();
+    $model->update($params, $_POST['tareaActualizar']);
+    header('Location: /');
+  }
+
+  public function delete($params = null)
+  {
+    $model = new HomeModel();
+    $model->delete($params);
     header('Location: /');
   }
 }
