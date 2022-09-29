@@ -17,4 +17,9 @@ class Controller
   {
     return $_POST[$value];
   }
+
+  public function redirect($route, $data)
+  {
+    header("Location: {$route}/?res={$data}");
+  }
 }

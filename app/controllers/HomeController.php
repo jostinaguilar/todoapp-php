@@ -11,7 +11,7 @@ class Home extends Controller
 
   public function index()
   {
-    $data = $this->getAll();
+    $data['data'] = $this->getAll();
     $this->view->render("home/index", $data);
   }
 
@@ -26,11 +26,12 @@ class Home extends Controller
     $tarea =  $this->post("nombreTarea");
     if (!empty($tarea)) {
       $model = new HomeModel();
-      $model->save($tarea);
-
+      $res = $model->save($tarea);
+      if ($res == 1) {
+        header('Location: /');
+      }
       header('Location: /');
     }
-
     header('Location: /');
   }
 

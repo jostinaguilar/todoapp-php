@@ -1,7 +1,8 @@
 const listaTareas = document.getElementById("listaTareas");
+const confirmDelete = document.getElementById("confirmDelete");
 
 listaTareas.addEventListener("click", (e) => {
-  if (e.target && e.target.tagName === "BUTTON") {
+  if (e.target && e.target.classList.contains("btn-primary")) {
     let inputUpdate = e.target.parentElement.previousElementSibling;
     inputUpdate.readOnly = false;
     inputUpdate.className =
@@ -12,3 +13,7 @@ listaTareas.addEventListener("click", (e) => {
     btnUpdate.className = "btn btn-success btn-sm";
   }
 });
+
+function deleteTask(id) {
+  confirmDelete.setAttribute("href", `/home/delete/${id}`);
+}
