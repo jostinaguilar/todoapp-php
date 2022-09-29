@@ -13,7 +13,7 @@ class HomeModel extends Model
     $query = $this->query("SELECT * FROM tareas ORDER BY id_tarea ASC");
     if ($query) {
       while ($row = mysqli_fetch_array($query)) {
-        $item = ["id" => $row["id_tarea"], "tarea" => $row["nombre_tarea"]];
+        $item = ["idTask" => $row["id_tarea"], "nameTask" => $row["nombre_tarea"]];
         array_push($items, $item);
       }
       return $items;

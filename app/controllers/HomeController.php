@@ -11,8 +11,7 @@ class Home extends Controller
 
   public function index()
   {
-    $data = $this->getAll();
-    $this->view->render("home/index", $data);
+    $this->view->render("home/index");
   }
 
   public function getAll()
@@ -25,6 +24,7 @@ class Home extends Controller
   {
     $model = new HomeModel();
     $data = $model->getAll();
+    echo json_encode($data);
   }
 
   public function create()
