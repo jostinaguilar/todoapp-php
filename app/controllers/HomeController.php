@@ -21,16 +21,23 @@ class Home extends Controller
     return $model->getAll();
   }
 
+  public function getAllByJSON()
+  {
+    $model = new HomeModel();
+    $data = $model->getAll();
+  }
+
   public function create()
   {
     $tarea =  $this->post("nombreTarea");
     if (!empty($tarea)) {
       $model = new HomeModel();
-      $model->save($tarea);
-
+      $res = $model->save($tarea);
+      if ($res == 1) {
+        header('Location: /');
+      }
       header('Location: /');
     }
-
     header('Location: /');
   }
 
