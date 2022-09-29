@@ -25,6 +25,7 @@ class Home extends Controller
   {
     $model = new HomeModel();
     $data = $model->getAll();
+    echo json_encode($data);
   }
 
   public function create()

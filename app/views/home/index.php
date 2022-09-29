@@ -42,5 +42,5 @@
     </div>
   </div>
 </div>
-
+<script src="./public/js/todoService.js"></script>
 <?php include_once "app/views/layout/footer.php" ?>
