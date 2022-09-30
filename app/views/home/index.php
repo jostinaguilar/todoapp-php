@@ -1,13 +1,13 @@
 <?php include_once "app/views/layout/header.php" ?>
 <div class="container">
-  <div class="col-md-4 m-auto mt-5 pt-4">
+  <div class="col-md-5 m-auto mt-3 pt-4">
     <h1 class="fw-bold text-center mb-4">To Do App</h1>
     <div class="my-4">
       <input type="text" class="form-control text-center" placeholder="Buscar Tarea" id="searchTask">
     </div>
     <div class="my-4">
-      <form action="/home/create" method="POST" class="d-flex gap-3">
-        <input type="text" placeholder="Nombre de la Tarea" autocomplete="off" name="nombreTarea" class="form-control">
+      <form method="POST" class="d-flex gap-3" id="formCreate">
+        <input type="text" placeholder="Crear nueva Tarea" autocomplete="off" name="nameTask" class="form-control">
         <button type="submit" class="btn btn-success btn-sm">Crear</button>
       </form>
     </div>
@@ -36,5 +36,5 @@
   </div>
 </div>
 <script src="./public/js/todoService.js"></script>
-<!-- <script src="./public/js/default.js"></script> -->
+<script src="./public/js/default.js"></script>
 <?php include_once "app/views/layout/footer.php" ?>

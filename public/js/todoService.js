@@ -1,5 +1,6 @@
 const todoList = document.getElementById("todoList");
 const inputSearch = document.getElementById("searchTask");
+const formCreate = document.getElementById("formCreate");
 
 let todos = [];
 
@@ -10,14 +11,46 @@ window.addEventListener("DOMContentLoaded", async () => {
   renderTodos(todos);
 });
 
+formCreate.addEventListener("submit", async (evt) => {
+  evt.preventDefault();
+
+  let dataForm = new FormData(formCreate);
+  console.log(dataForm);
+  console.log(dataForm.get("nameTask"));
+
+  const res = await saveTodo(dataForm);
+  console.log(res);
+  const dataRes = await getTodos();
+  todos = dataRes;
+  renderTodos(todos);
+});
+
 async function getTodos() {
   const response = await fetch("http://todoapp.test/home/getAllByJSON");
   return await response.json();
 }
 
+async function saveTodo(data) {
+  const response = await fetch("http://todoapp.test/home/create", {
+    method: "POST",
+    body: data,
+  });
+  return await response.json();
+}
+
 const createTodosItem = (todos) =>
   todos
-    .map((todo) => `<input value="${todo.nameTask}" class="form-control"/>`)
+    .map(
+      (todo) =>
+        `<form action="" class="p-2 bg-light border d-flex justify-content-between rounded px-3">
+            <input value="${todo.nameTask}" class="border border-0 bg-transparent outline w-100" readonly placeholder="Nombre Tarea"/>
+            <div class="d-flex justify-content-end gap-2">
+                <button type="submit" class="none"><i class="bi bi-check-circle"></i></button>
+                <button type="button" class="btn btn-primary btn-sm bi bi-pen"></button>
+                <button type="button"  class="btn btn-dark btn-sm"><i class="bi bi-trash3"></i></button>
+            </div>
+        </form>`
+    )
     .join("");
 
 function renderTodos(todos) {

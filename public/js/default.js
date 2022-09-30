@@ -1,8 +1,9 @@
-const listaTareas = document.getElementById("listaTareas");
+const todosList = document.getElementById("todoList");
 const confirmDelete = document.getElementById("confirmDelete");
 
-listaTareas.addEventListener("click", (e) => {
+todosList.addEventListener("click", (e) => {
   if (e.target && e.target.classList.contains("btn-primary")) {
+    console.log(e.target.classList.contains("btn-primary"));
     let inputUpdate = e.target.parentElement.previousElementSibling;
     inputUpdate.readOnly = false;
     inputUpdate.className =

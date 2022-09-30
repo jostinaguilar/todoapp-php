@@ -29,16 +29,18 @@ class Home extends Controller
 
   public function create()
   {
-    $tarea =  $this->post("nombreTarea");
-    if (!empty($tarea)) {
+    $task =  $this->post("nameTask");
+    if (!empty($task)) {
       $model = new HomeModel();
-      $res = $model->save($tarea);
-      if ($res == 1) {
-        header('Location: /');
+      $res = $model->save($task);
+      if ($res) {
+        echo json_encode('success');
+      } else {
+        echo json_encode('error');
       }
-      header('Location: /');
+    } else {
+      echo json_encode('error');
     }
-    header('Location: /');
   }
 
   public function update($params = null)
