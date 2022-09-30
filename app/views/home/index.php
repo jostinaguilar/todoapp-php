@@ -36,5 +36,8 @@
   </div>
 </div>
 <script src="./public/js/todoService.js"></script>
+<<<<<<< HEAD
 <script src="./public/js/default.js"></script>
+=======
+>>>>>>> 6bfa5c4f3875100b96da898e38310299b9766ebf
 <?php include_once "app/views/layout/footer.php" ?>
