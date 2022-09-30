@@ -9,11 +9,7 @@
       </form>
     </div>
     <div class="d-grid gap-3" id="listaTareas">
-<<<<<<< HEAD
       <?php foreach ($this->data as $dato) : ?>
-=======
-      <?php foreach ($this->data['data'] as $dato) : ?>
->>>>>>> 2783db34281f7cadbc2416a557e694cd666e1f7c
         <form action="/home/update/<?= $dato["id"] ?>" method="POST" class="p-2 bg-light border d-flex justify-content-between rounded px-3">
           <input class="border border-0 bg-transparent outline" value="<?= $dato['tarea'] ?>" readonly placeholder="Nombre de Tarea" name="tareaActualizar" />
           <div>

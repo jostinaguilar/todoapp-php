@@ -11,7 +11,7 @@ class Home extends Controller
 
   public function index()
   {
-    $data['data'] = $this->getAll();
+    $data = $this->getAll();
     $this->view->render("home/index", $data);
   }
 
