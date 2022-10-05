@@ -42,12 +42,12 @@ const createTodosItem = (todos) =>
   todos
     .map(
       (todo) =>
-        `<form action="" class="p-2 bg-light border d-flex justify-content-between rounded px-3">
+        `<form class="p-2 bg-light border d-flex justify-content-between rounded px-3">
             <input value="${todo.nameTask}" class="border border-0 bg-transparent outline w-100" readonly placeholder="Nombre Tarea"/>
             <div class="d-flex justify-content-end gap-2">
                 <button type="submit" class="none"><i class="bi bi-check-circle"></i></button>
                 <button type="button" class="btn btn-primary btn-sm bi bi-pen"></button>
-                <button type="button"  class="btn btn-dark btn-sm"><i class="bi bi-trash3"></i></button>
+                <button type="button"  class="btn btn-dark btn-sm bi bi-trash3"></button>
             </div>
         </form>`
     )
@@ -57,6 +57,14 @@ function renderTodos(todos) {
   const itemsString = createTodosItem(todos);
   todoList.innerHTML = itemsString;
 }
+
+todoList.addEventListener("click", (evt) => {
+  if (evt.target.classList.contains("btn-dark")) {
+    console.log("eliminar");
+  } else if (evt.target.classList.contains("btn-primary")) {
+    console.log("editar");
+  }
+});
 
 inputSearch.addEventListener("keyup", (evt) => {
   const newTodos = todos.filter((todo) =>
