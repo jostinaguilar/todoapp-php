@@ -53,7 +53,7 @@ class Home extends Controller
   public function delete($params = null)
   {
     $model = new HomeModel();
-    $model->delete($params);
-    header('Location: /');
+    $res = $model->delete($params);
+    echo json_encode('deleted');
   }
 }
