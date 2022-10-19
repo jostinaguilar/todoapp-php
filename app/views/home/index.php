@@ -7,7 +7,7 @@
     </div>
     <div class="my-4">
       <form method="POST" class="d-flex gap-3" id="formCreate">
-        <input type="text" placeholder="Crear nueva Tarea" autocomplete="off" name="nameTask" class="form-control">
+        <input type="text" placeholder="Crear nueva Tarea" autocomplete="off" id="nameTask" name="nameTask" class="form-control">
         <button type="submit" class="btn btn-success btn-sm">Crear</button>
       </form>
     </div>
@@ -16,25 +16,25 @@
   </div>
 </div>
 
-
 <!-- Modal -->
-<div class="modal fade" id="modalDelete" tabindex="-1" aria-labelledby="modalDeleteLabel" aria-hidden="true">
+<div class="modal fade" id="deleteConfirmModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
   <div class="modal-dialog">
     <div class="modal-content">
       <div class="modal-header">
-        <h5 class="modal-title" id="modalDeleteLabel">Advertencia</h5>
+        <h1 class="modal-title fs-5" id="exampleModalLabel">Advertencia</h1>
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
       <div class="modal-body">
-        ¿Estás Seguro de Eliminar esta tarea?
+        ¿Está seguro de eliminar esta tarea?
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
-        <a class="btn btn-danger" id="confirmDelete">Eliminar</a>
+        <button type="button" id="confirmDelete" class="btn btn-primary" data-bs-dismiss="modal">Eliminar</button>
       </div>
     </div>
   </div>
 </div>
+
 <script src="./public/js/todoService.js"></script>
 <!-- <script src="./public/js/default.js"></script> -->
 <?php include_once "app/views/layout/footer.php" ?>

@@ -1,41 +1,60 @@
-const todoList = document.getElementById("todoList");
-const inputSearch = document.getElementById("searchTask");
-const formCreate = document.getElementById("formCreate");
+const todoList = document.getElementById('todoList');
+const inputSearch = document.getElementById('searchTask');
+const formCreate = document.getElementById('formCreate');
+const nameTaskInput = document.getElementById('nameTask');
+const confirmDelete = document.getElementById('confirmDelete');
 
 let todos = [];
 
-window.addEventListener("DOMContentLoaded", async () => {
-  todoList.innerHTML = "<span>Loading</span>";
+window.addEventListener('DOMContentLoaded', async () => {
+  todoList.innerHTML = '<span>Loading Data</span>';
   const data = await getTodos();
   todos = data;
+  console.log(todos.length);
+  if (todos.length == 0) {
+    todoList.innerHTML = '<span>Sin tareas</span>';
+    return;
+  }
   renderTodos(todos);
 });
 
-formCreate.addEventListener("submit", async (evt) => {
+formCreate.addEventListener('submit', async (evt) => {
   evt.preventDefault();
 
   let dataForm = new FormData(formCreate);
-  console.log(dataForm);
-  console.log(dataForm.get("nameTask"));
 
   const res = await saveTodo(dataForm);
-  console.log(res);
+  if (res == 'success') {
+    formCreate.querySelector('.form-control').value = '';
+    showToastAlert('Tarea agregada correctamente', '#00b09b, #96c93d');
+  }
   const dataRes = await getTodos();
   todos = dataRes;
   renderTodos(todos);
 });
 
 async function getTodos() {
-  const response = await fetch("http://todoapp.test/home/getAllByJSON");
+  const response = await fetch('http://todoapp.test/home/getAllByJSON');
   return await response.json();
 }
 
 async function saveTodo(data) {
-  const response = await fetch("http://todoapp.test/home/create", {
-    method: "POST",
+  const response = await fetch('http://todoapp.test/home/create', {
+    method: 'POST',
     body: data,
   });
   return await response.json();
+}
+
+async function deleteTodo(id) {
+  const response = await fetch(`http://todoapp.test/home/delete/${id}`);
+  const res = await response.json();
+  if (res === 'deleted') {
+    showToastAlert('Tarea Eliminada', 'rgb(255, 95, 109), rgb(255, 195, 113)');
+    const dataRes = await getTodos();
+    todos = dataRes;
+    renderTodos(todos);
+  }
 }
 
 const createTodosItem = (todos) =>
@@ -47,28 +66,42 @@ const createTodosItem = (todos) =>
             <div class="d-flex justify-content-end gap-2">
                 <button type="submit" class="none"><i class="bi bi-check-circle"></i></button>
                 <button type="button" class="btn btn-primary btn-sm bi bi-pen"></button>
-                <button type="button"  class="btn btn-dark btn-sm bi bi-trash3"></button>
+                <button type="button" data-id="${todo.idTask}" data-bs-toggle="modal" data-bs-target="#deleteConfirmModal" class="btn btn-dark btn-sm bi bi-trash3"></button>
             </div>
         </form>`
     )
-    .join("");
+    .join('');
+
+todoList.addEventListener('click', (evt) => {
+  if (evt.target.classList.contains('btn-dark')) {
+    console.log(evt.target.dataset.id);
+    let id = evt.target.dataset.id;
+    confirmDelete.setAttribute('onclick', `deleteTodo(${id})`);
+  }
+  evt.stopPropagation();
+});
 
 function renderTodos(todos) {
   const itemsString = createTodosItem(todos);
   todoList.innerHTML = itemsString;
 }
 
-todoList.addEventListener("click", (evt) => {
-  if (evt.target.classList.contains("btn-dark")) {
-    console.log("eliminar");
-  } else if (evt.target.classList.contains("btn-primary")) {
-    console.log("editar");
-  }
-});
-
-inputSearch.addEventListener("keyup", (evt) => {
+inputSearch.addEventListener('keyup', () => {
   const newTodos = todos.filter((todo) =>
     todo.nameTask.toLowerCase().includes(inputSearch.value.toLowerCase())
   );
   renderTodos(newTodos);
 });
+
+function showToastAlert(content, gradient) {
+  Toastify({
+    text: content,
+    duration: 3000,
+    gravity: 'top',
+    position: 'right',
+    stopOnFocus: true,
+    style: {
+      background: `linear-gradient(to right, ${gradient})`,
+    },
+  }).showToast();
+}
