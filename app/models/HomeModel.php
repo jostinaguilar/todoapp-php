@@ -39,11 +39,21 @@ class HomeModel extends Model
 
   public function update($id, $name)
   {
-    $this->query("UPDATE tareas SET nombre_tarea = '{$name}' WHERE id_tarea = '{$id}'");
+    $query = $this->query("UPDATE tareas SET nombre_tarea = '{$name}' WHERE id_tarea = '{$id}'");
+    if ($query) {
+      return true;
+    } else {
+      return false;
+    }
   }
 
   public function delete($id)
   {
-    $this->query("DELETE FROM tareas WHERE id_tarea = '{$id}'");
+    $query = $this->query("DELETE FROM tareas WHERE id_tarea = '{$id}'");
+    if ($query) {
+      return true;
+    } else {
+      return false;
+    }
   }
 }

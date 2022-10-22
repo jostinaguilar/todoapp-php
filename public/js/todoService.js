@@ -28,8 +28,11 @@ formCreate.addEventListener('submit', async (evt) => {
   if (res == 'success') {
     formCreate.querySelector('.form-control').value = '';
     showToastAlert('Tarea Agregada', '#00b09b, #96c93d');
+    formCreate.querySelector('input').className = 'form-control';
   } else {
-    showToastAlert('Rellena los campos', '#ED213A, #93291E');
+    showToastAlert('Rellena los campos', '#93291E, #ED213A');
+    formCreate.querySelector('input').className +=
+      ' border border-danger border-2';
   }
   const dataRes = await getTodos();
   todos = dataRes;
@@ -53,7 +56,7 @@ async function deleteTodo(id) {
   const response = await fetch(`http://todoapp.test/home/delete/${id}`);
   const res = await response.json();
   if (res === 'deleted') {
-    showToastAlert('Tarea Eliminada', '#ED213A, #93291E');
+    showToastAlert('Tarea Eliminada', '#93291E, #ED213A');
     const dataRes = await getTodos();
     todos = dataRes;
     if (todos.length == 0) {
@@ -64,7 +67,19 @@ async function deleteTodo(id) {
   }
 }
 
-function updateTodo() {}
+async function updateTodo(id, data) {
+  const response = await fetch(`http://todoapp.test/home/update/${id}`, {
+    method: 'POST',
+    body: data,
+  });
+  const res = await response.json();
+  if (res === 'success') {
+    showToastAlert('Tarea Actualizada', '#00b09b, #96c93d');
+    const dataRes = await getTodos();
+    todos = dataRes;
+    renderTodos(todos);
+  }
+}
 
 const createTodosItem = (todos) =>
   todos
@@ -72,7 +87,7 @@ const createTodosItem = (todos) =>
       (todo) =>
         `<form class="p-2 bg-light border d-flex justify-content-between rounded px-3">
             <input value="${todo.nameTask}" name="editTask" class="border border-0 bg-transparent outline w-100" readonly placeholder="Nombre Tarea"/>
-              <button type="submit" class="none"><i class="bi bi-check-circle"></i></button>
+              <button type="submit" data-id="${todo.idTask}" class="none"></button>
               <button type="button" class="btn btn-primary btn-sm bi bi-pen"></button>
               <button type="button" data-id="${todo.idTask}" data-bs-toggle="modal" data-bs-target="#deleteConfirmModal" class="btn btn-dark btn-sm bi bi-trash3 ms-2"></button>
         </form>`
@@ -86,15 +101,20 @@ todoList.addEventListener('click', (evt) => {
     confirmDelete.setAttribute('onclick', `deleteTodo(${id})`);
   } else if (evt.target.classList.contains('btn-primary')) {
     evt.target.parentElement.querySelector('button[type="submit"]').className =
-      'btn btn-success btn-sm';
+      'btn btn-success btn-sm bi bi-check-circle ms-4';
     evt.target.className = 'none';
     console.log(evt.target.parentElement.querySelector('input'));
     evt.target.parentElement.querySelector('input').readOnly = false;
+    evt.target.parentElement.querySelector('input').className =
+      'border border-0 bg-transparent outline border-bottom w-100';
+  } else if (evt.target.classList.contains('btn-success')) {
     evt.target.parentElement.addEventListener('submit', (e) => {
       e.preventDefault();
       console.log('send editar');
       let formEditar = new FormData(evt.target.parentElement);
       console.log(formEditar.get('editTask'));
+      console.log(evt.target.dataset.id);
+      updateTodo(evt.target.dataset.id, formEditar);
     });
   }
   evt.stopPropagation();

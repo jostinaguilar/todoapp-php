@@ -46,8 +46,12 @@ class Home extends Controller
   public function update($params = null)
   {
     $model = new HomeModel();
-    $model->update($params, $_POST['tareaActualizar']);
-    header('Location: /');
+    $res = $model->update($params, $_POST['editTask']);
+    if ($res) {
+      echo json_encode('success');
+    } else {
+      echo json_encode('error');
+    }
   }
 
   public function delete($params = null)
