@@ -22,7 +22,6 @@ formCreate.addEventListener('submit', async (evt) => {
   evt.preventDefault();
 
   let dataForm = new FormData(formCreate);
-  console.log(formCreate);
 
   const res = await saveTodo(dataForm);
   if (res == 'success') {
@@ -96,25 +95,21 @@ const createTodosItem = (todos) =>
 
 todoList.addEventListener('click', (evt) => {
   if (evt.target.classList.contains('btn-dark')) {
-    // setTask(evt.target.parentElement);
     let id = evt.target.dataset.id;
     confirmDelete.setAttribute('onclick', `deleteTodo(${id})`);
   } else if (evt.target.classList.contains('btn-primary')) {
-    evt.target.parentElement.querySelector('button[type="submit"]').className =
+    let formEdit = evt.target.parentElement;
+    formEdit.querySelector('.none').className =
       'btn btn-success btn-sm bi bi-check-circle ms-4';
     evt.target.className = 'none';
-    console.log(evt.target.parentElement.querySelector('input'));
-    evt.target.parentElement.querySelector('input').readOnly = false;
-    evt.target.parentElement.querySelector('input').className =
+    formEdit.querySelector('input').readOnly = false;
+    formEdit.querySelector('input').className =
       'border border-0 bg-transparent outline border-bottom w-100';
   } else if (evt.target.classList.contains('btn-success')) {
     evt.target.parentElement.addEventListener('submit', (e) => {
       e.preventDefault();
-      console.log('send editar');
-      let formEditar = new FormData(evt.target.parentElement);
-      console.log(formEditar.get('editTask'));
-      console.log(evt.target.dataset.id);
-      updateTodo(evt.target.dataset.id, formEditar);
+      let formEdit = new FormData(evt.target.parentElement);
+      updateTodo(evt.target.dataset.id, formEdit);
     });
   }
   evt.stopPropagation();
@@ -149,11 +144,3 @@ function showToastAlert(content, gradient) {
     },
   }).showToast();
 }
-
-// function setTask(obj) {
-//   task = {
-//     id: obj.querySelector('.btn-dark').dataset.id,
-//     task: obj.querySelector('input[name="nameTask"]').value,
-//   };
-//   console.log(task);
-// }
