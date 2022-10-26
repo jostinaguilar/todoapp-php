@@ -3,6 +3,7 @@ const inputSearch = document.getElementById('searchTask');
 const formCreate = document.getElementById('formCreate');
 const nameTaskInput = document.getElementById('nameTask');
 const confirmDelete = document.getElementById('confirmDelete');
+const msgError = document.getElementById('msgError');
 
 let todos = [];
 let task = {};
@@ -25,13 +26,16 @@ formCreate.addEventListener('submit', async (evt) => {
 
   const res = await saveTodo(dataForm);
   if (res == 'success') {
-    formCreate.querySelector('.form-control').value = '';
+    formCreate.querySelector('.input').value = '';
     showToastAlert('Tarea Agregada', '#00b09b, #96c93d');
-    formCreate.querySelector('input').className = 'form-control';
+    msgError.textContent = '';
+    formCreate.querySelector('input').className = 'input input-bordered w-full';
   } else {
     showToastAlert('Rellena los campos', '#93291E, #ED213A');
-    formCreate.querySelector('input').className +=
-      ' border border-danger border-2';
+    msgError.textContent = '*Error campos vacios';
+    formCreate.querySelector('input').className =
+      'input input-bordered input-error w-full max-w-xs';
+    formCreate.querySelector('input').focus();
   }
   const dataRes = await getTodos();
   todos = dataRes;
@@ -84,27 +88,27 @@ const createTodosItem = (todos) =>
   todos
     .map(
       (todo) =>
-        `<form class="p-2 bg-light border d-flex justify-content-between rounded px-3">
-            <input value="${todo.nameTask}" name="editTask" class="border border-0 bg-transparent outline w-100" readonly placeholder="Nombre Tarea"/>
+        `<form class="flex bg-base-200 shadow-lg mb-4 py-4 px-6 rounded-md">
+            <input value="${todo.nameTask}" name="editTask" class="bg-transparent outline-none border-b-2 border-transparent mr-4 w-full" readonly placeholder="Nombre Tarea"/>
               <button type="submit" data-id="${todo.idTask}" class="none"></button>
-              <button type="button" class="btn btn-primary btn-sm bi bi-pen"></button>
-              <button type="button" data-id="${todo.idTask}" data-bs-toggle="modal" data-bs-target="#deleteConfirmModal" class="btn btn-dark btn-sm bi bi-trash3 ms-2"></button>
+              <button type="button" class="btn btn-secondary btn-sm bi bi-pen"></button>
+              <a href="#modalDelete" data-id="${todo.idTask}" class="btn btn-sm bi bi-trash3 ml-2"></a>
         </form>`
     )
     .join('');
 
 todoList.addEventListener('click', (evt) => {
-  if (evt.target.classList.contains('btn-dark')) {
+  if (evt.target.classList.contains('bi-trash3')) {
     let id = evt.target.dataset.id;
     confirmDelete.setAttribute('onclick', `deleteTodo(${id})`);
-  } else if (evt.target.classList.contains('btn-primary')) {
+  } else if (evt.target.classList.contains('bi-pen')) {
     let formEdit = evt.target.parentElement;
     formEdit.querySelector('.none').className =
       'btn btn-success btn-sm bi bi-check-circle ms-4';
     evt.target.className = 'none';
     formEdit.querySelector('input').readOnly = false;
     formEdit.querySelector('input').className =
-      'border border-0 bg-transparent outline border-bottom w-100';
+      'border-b-2 bg-transparent outline-none w-100 border-purple-700 mr-4 w-full';
   } else if (evt.target.classList.contains('btn-success')) {
     evt.target.parentElement.addEventListener('submit', (e) => {
       e.preventDefault();
@@ -137,10 +141,12 @@ function showToastAlert(content, gradient) {
     text: content,
     duration: 3000,
     gravity: 'top',
+    close: true,
     position: 'right',
     stopOnFocus: true,
     style: {
       background: `linear-gradient(to right, ${gradient})`,
+      'box-shadow': 'none',
     },
   }).showToast();
 }
